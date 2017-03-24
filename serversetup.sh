@@ -28,7 +28,7 @@ fi
 
 echo "=============================================="
 echo "         OpenVPN Bridge Installer"
-echo "                  SERVER
+echo "                  SERVER"
 echo ""
 echo "Intended for installation on Ubuntu 16.04."
 echo ""

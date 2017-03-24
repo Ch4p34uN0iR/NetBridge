@@ -14,8 +14,8 @@ Client - https://www.offensive-security.com/kali-linux/kali-rolling-iso-of-doom
 ------------------------------------------------
 
 1) Spin up an Ubuntu 16.04 server and run serversetup.sh to install the NetBridge server.
-- Produces two files, client1.ovpn and client2.ovpn.
+-> Produces two files, client1.ovpn and client2.ovpn.
 
 2) Install kali-2.1.2-rpi2 onto a Raspberry Pi 2/3, copy over client1.ovpn, and run clientsetup.sh to install the NetBridge client.
 
-[Result]: A droppable Raspberry Pi that, when plugged into your target network, will automatically connect to your Ubuntu OpenVPN server and keep open a route to the network.  To tunnel in, connect to your Ubuntu OpenVPN server (openvpn client2.ovpn) and add a route to the target network through client1 (route add -net <target network range> gw <client1 vpn ip address>).
+Result: A droppable Raspberry Pi that, when plugged into your target network, will automatically connect to your Ubuntu OpenVPN server and keep open a route to the network.  To tunnel in, connect to your Ubuntu OpenVPN server (openvpn client2.ovpn) and add a route to the target network through client1 (route add -net \<target network range\> gw \<client1 vpn ip address\>).

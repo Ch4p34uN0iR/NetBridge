@@ -43,7 +43,7 @@ fi
 
 echo "=============================================="
 echo "         OpenVPN Bridge Installer"
-echo "                  CLIENT
+echo "                  CLIENT"
 echo ""
 echo "Intended for installation on kali-2.1.2-rpi2"
 echo ""

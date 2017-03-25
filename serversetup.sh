@@ -34,7 +34,7 @@ fi
 declare -a ISSUES
 
 function check() {
-  if [ $?!=0 ]; then
+  if [ $? -ne 0 ]; then
     echo -e $R"[-] Error with: $1"$END
     ISSUES[${#ISSUES[*]}]="Error with: $1"
     return 1

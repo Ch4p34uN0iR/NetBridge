@@ -16,30 +16,44 @@
 # [Modification, Distribution, and Attribution]:
 # You are free to modify and/or distribute this script as you wish.  I only ask that you maintain original
 # author attribution and not attempt to sell it or incorporate it into any commercial offering (as if it's
-# worth anything anyway :) 
+# worth anything anyway :)
 #
 # [Source]:
 # https://www.offensive-security.com/kali-linux/kali-rolling-iso-of-doom
 #
-# Designed for use on a Raspberry Pi running 
-# kali-2.1.2-rpi2              
+# Designed for use on a Raspberry Pi running
+# kali-2.1.2-rpi2
 ###################################################
 
+Y="\033[93m"
+G="\033[92m"
+R="\033[91m"
+END="\033[0m"
+
 if [[ $EUID -ne 0 ]]; then
-  echo "[-] Script must be run as root"
+  echo -e $R"[-] Script must be run as root"$END
   exit 1
 fi
 
 if [ -z $1 ]; then
-  echo "Usage:"
-  echo "$0 <client1.ovpn>
+  echo -e $Y"Usage:"$END
+  echo -e $Y"$0 <client1.ovpn>"$END
   exit 2
 elif [ ! -f $1 ]; then
-  echo "File not found: $1"
-  echo "Usage:"
-  echo "$0 <client1.ovpn>
+  echo -e $R"[-] File not found: $1"$END
+  echo -e $Y"Usage:"$END
+  echo -e $Y"$0 <client1.ovpn>"$END
   exit 2
 fi
+
+declare -a ISSUES
+
+function check() {
+  if [ $?!=0 ]; then
+    echo -e $R"[-] Error with: $1"$END
+    ISSUES[${#ISSUES[*]}]="Error with: $1"
+  fi
+}
 
 echo "=============================================="
 echo "         OpenVPN Bridge Installer"
@@ -52,37 +66,52 @@ echo "https://www.offensive-security.com/kali-linux/kali-rolling-iso-of-doom"
 echo "=============================================="
 
 
-echo "[*] Updating system..."
+echo -e $Y"[*] Updating system..."$END
 apt-get update
 apt-get dist-upgrade -y
 apt autoremove
 apt-get install -y netdiscover tcpdump
+check "System update"
 
 #
 # ======= Configure OpenVPN Client =======
 #
 
-echo "[*] Installing OpenVPN..."
+echo -e $Y"[*] Installing OpenVPN..."$END
 apt-get install openvpn -y
+check "OpenVPN install"
 
-echo "[*] Placing Configuration file..."
+echo -e $Y"[*] Placing Configuration file..."$END
 cp $1 /etc/openvpn/client1.conf
 chmod 600 /etc/openvpn/client1.conf
+check "Placing config file"
 
-echo "[*] Enabling OpenVPN to start at boot..."
+echo -e $Y"[*] Enabling OpenVPN to start at boot..."$END
 sed -i -- 's/#AUTOSTART="all"/AUTOSTART="all"/g' /etc/default/openvpn
 systemctl enable openvpn
+check "Enabling OpenVPN to start at boot"
 
 #
 # ======= Configure Port Forwarding =======
 #
 
-echo "[*] Configuring port forwarding..."
+echo -e $Y"[*] Configuring port forwarding..."$END
 sed -i -- 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/g' /etc/sysctl.conf
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o eth0 -j MASQUERADE
+check "Configuring port forwarding"
 
-echo "[*] Making port forwarding persistent..."
+echo -e $Y"[*] Making port forwarding persistent..."$END
 apt-get install iptables-persistent -y
 systemctl enable netfilter-persistent
+check "Making port forwarding persistent"
 
-echo "[+] Complete.  Be sure to remove $1"
+#
+# ======= Completion =======
+#
+
+echo -e $G"[+] Complete.  Be sure to remove $1"$END
+
+echo -e $Y"[*] Issues encountered: ${#ISSUES[*]}"$END
+for i in "${ISSUES[*]}"
+  do echo -e $R"\t- $i"$END
+done

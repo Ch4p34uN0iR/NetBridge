@@ -154,8 +154,9 @@ check "Enabling systemctl portforwarding"
 
 echo -e $Y"[*] Enabling OpenVPN server to run at boot..."$END
 systemctl enable openvpn@server
-systemctl start openvpn@server
 check "Enabling OpenVPN server to run at boot"
+systemctl start openvpn@server
+check "Starting OpenVPN server"
 
 #
 # ======= Configure OpenVPN Client =======

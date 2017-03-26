@@ -220,10 +220,12 @@ check "Generating OpenVPN clients"
 echo -e $G"[+] COMPLETE: Retrieve your client config files at $dir/files/"$END
 
 echo -e $Y"[*] Issues encountered: ${#ISSUES[*]}"$END
-for i in "${ISSUES[*]}"
-  do echo -e $R"\t- $i"$END
-done
+if [ ${#ISSUES[*]} -ne 0 ]; then
+  for i in "${ISSUES[*]}"
+    do echo -e $R"\t- $i"$END
+  done
+fi
 
-echo -e $Y"[*] Make sure to configure firewall to allow the following INPUTs:"$END
+echo -e $Y"[*] TODO: Configure firewall to allow the following INPUTs:"$END
 echo -e "\t- 443/tcp"
-echo -e $Y"[*] Add status alerts to the scripts found in /etc/openvpn/scripts"$END
+echo -e $Y"[*] TODO: Add status alerts to the scripts found in /etc/openvpn/scripts"$END

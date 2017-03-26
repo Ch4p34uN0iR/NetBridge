@@ -114,6 +114,8 @@ check "Making port forwarding persistent"
 echo -e $G"[+] Complete.  Be sure to remove $1"$END
 
 echo -e $Y"[*] Issues encountered: ${#ISSUES[*]}"$END
-for i in "${ISSUES[*]}"
-  do echo -e $R"\t- $i"$END
-done
+if [ ${#ISSUES[*]} -ne 0 ]; then
+  for i in "${ISSUES[*]}"
+    do echo -e $R"\t- $i"$END
+  done
+fi

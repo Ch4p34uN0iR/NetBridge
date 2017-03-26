@@ -92,6 +92,8 @@ echo -e $Y"[*] Enabling OpenVPN to start at boot..."$END
 sed -i -- 's/#AUTOSTART="all"/AUTOSTART="all"/g' /etc/default/openvpn
 systemctl enable openvpn
 check "Enabling OpenVPN to start at boot"
+systemctl start openvpn
+check "Starting OpenVPN"
 
 #
 # ======= Configure Port Forwarding =======

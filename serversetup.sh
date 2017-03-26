@@ -123,13 +123,13 @@ check "Building $dir/server.conf"
 
 echo -e $Y"[*] Laying out OpenVPN server scripts..."$END
 mkdir /etc/openvpn/scripts
-touch /etc/openvpn/scripts/up.sh
+echo '#!/bin/bash' > /etc/openvpn/scripts/up.sh
 chmod 700 /etc/openvpn/scripts/up.sh
-touch /etc/openvpn/scripts/down.sh
+echo '#!/bin/bash' /etc/openvpn/scripts/down.sh
 chmod 700 /etc/openvpn/scripts/down.sh
-touch /etc/openvpn/scripts/connect.sh
+echo '#!/bin/bash' /etc/openvpn/scripts/connect.sh
 chmod 700 /etc/openvpn/scripts/connect.sh
-touch /etc/openvpn/scripts/disconnect.sh
+echo '#!/bin/bash' /etc/openvpn/scripts/disconnect.sh
 chmod 700 /etc/openvpn/scripts/disconnect.sh
 check "Laying out OpenVPN server scripts"
 
@@ -154,6 +154,7 @@ check "Enabling systemctl portforwarding"
 
 echo -e $Y"[*] Enabling OpenVPN server to run at boot..."$END
 systemctl enable openvpn@server
+systemctl start openvpn@server
 check "Enabling OpenVPN server to run at boot"
 
 #
